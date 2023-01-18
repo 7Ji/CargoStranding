@@ -18,9 +18,9 @@ void Cargo::set_size(Sizes size) {
 void Cargo::update_weight_string() {
     uint weight_int = weight / 10;
     uint weight_decimal = weight - weight_int * 10;
-    int r = snprintf(weight_string, 7, "%u.%u", weight_int, weight_decimal);
+    int r = std::snprintf(weight_string, 7, "%u.%u", weight_int, weight_decimal);
     if (r > 0) { // truncated
-        strncpy(weight_string, "------", 7);
+        std::strncpy(weight_string, "------", 7);
     } else if (r < 0) { // error
         std::strncpy(weight_string, "xxxxxx", 7);
     }
