@@ -1,16 +1,16 @@
 # Cargo Stranding
 
-## build
+## Build
 Clone the project and run `make`
 ```
 git clone https://github.com/7Ji/CargoStranding
 cd CargoStranding
 make
 ```
-The result binary is `cargo`
+The result binary is `CargoStranding`
 
 ## Usage
-Run `./cargo` to open the calculator to use its CLI
+Run `./CargoStranding` to open the calculator to use its CLI
 
 ### Request
 Enter `[Type]count(/total)(*duplicate)` to submit a request
