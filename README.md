@@ -42,6 +42,26 @@ The type of the material is represented in the following characters:
  - `r100/2300*6` for 6 duplicated requests of 2200 resins  
  `r100/2300*6`表示6个2200树脂的重复请求
 
+```
+=> Material request 3 or command: S1234/4567*3
+  => Requested Special Alloys * 3333 (3 duplicates)
+  => Request 3: Special Alloys * 3333
+    -> Special Alloys (1200) (XL, 120.0kg) * 2
+    -> Special Alloys (960) (XL, 96.0kg) * 1
+    -> Total weight: 336.0kg, total volume: 18
+  => Request 4: Special Alloys * 3333
+    -> Special Alloys (1200) (XL, 120.0kg) * 2
+    -> Special Alloys (960) (XL, 96.0kg) * 1
+    -> Total weight: 336.0kg, total volume: 18
+  => Request 5: Special Alloys * 3333
+    -> Special Alloys (1200) (XL, 120.0kg) * 2
+    -> Special Alloys (960) (XL, 96.0kg) * 1
+    -> Total weight: 336.0kg, total volume: 18
+```
+
+*Note: 1 single unit of volume equals the volume of a small cargo, so XL=6, L=4, M=2, S=1  
+注意：一单位体积等于一个小号货物的大小，XL=6，L=4，M=2，S=1*
+
 ### Report / 报告
 Enter `report` to get a full table of how many cargos of each quantity of each type of material should be carried like the following:  
 输入`report`得到一张每种材料的每种数量的货物各应该携带多少个的表
@@ -49,8 +69,20 @@ Enter `report` to get a full table of how many cargos of each quantity of each t
 ```
 => Material request 1 or command: M1234
   => Requested Metals * 1234 (1 duplicates)
+  => Request 1: Metals * 1234
+    -> Metals (1000) (XL, 100.0kg) * 1
+    -> Metals (400) (XL, 40.0kg) * 1
+    -> Total weight: 140.0kg, total volume: 12
 => Material request 2 or command: S2345/6789*2
   => Requested Special Alloys * 4444 (2 duplicates)
+  => Request 2: Special Alloys * 4444
+    -> Special Alloys (1200) (XL, 120.0kg) * 3
+    -> Special Alloys (960) (XL, 96.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 24
+  => Request 3: Special Alloys * 4444
+    -> Special Alloys (1200) (XL, 120.0kg) * 3
+    -> Special Alloys (960) (XL, 96.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 24
 => Material request 4 or command: report
   => Needed variants for current requests:
 ==========================================================
@@ -65,6 +97,9 @@ Enter `report` to get a full table of how many cargos of each quantity of each t
                 |     |     |     |     |     |   2 |   6 
 ==========================================================
   => Total weight: 1052.0 kg, total volume: 60
+    -> Warning: weight >= 600.0kg, exceeding the max carry capability of one Floating Carrier Lv2!
+    -> Warning: volume > 12 (=2XL=3L=6M=12S), exceeding the max carry capability of Reverse Trike!
+    -> Warning: volume > 36 (=6XL=9L=18M=36S), exceeding the max carry capability of one Floating Carrier!
 ```
 
 ### List / 清单
@@ -73,58 +108,99 @@ Enter `list` to get a full list of submitted requests and how many cargos of eac
 ```
 => Material request 1 or command: C1234
   => Requested Ceramics * 1234 (1 duplicates)
+  => Request 1: Ceramics * 1234
+    -> Ceramics (800) (XL, 80.0kg) * 1
+    -> Ceramics (480) (XL, 48.0kg) * 1
+    -> Total weight: 128.0kg, total volume: 12
 => Material request 2 or command: c2345/6789*2
   => Requested Chemicals * 4444 (2 duplicates)
+  => Request 2: Chemicals * 4444
+    -> Chemicals (600) (XL, 60.0kg) * 7
+    -> Chemicals (360) (XL, 36.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 48
+  => Request 3: Chemicals * 4444
+    -> Chemicals (600) (XL, 60.0kg) * 7
+    -> Chemicals (360) (XL, 36.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 48
 => Material request 4 or command: list
   => Request 1: Ceramics * 1234
-    -> Ceramics (800) * 1
-    -> Ceramics (480) * 1
+    -> Ceramics (800) (XL, 80.0kg) * 1
+    -> Ceramics (480) (XL, 48.0kg) * 1
+    -> Total weight: 128.0kg, total volume: 12
   => Request 2: Chemicals * 4444
-    -> Chemicals (600) * 7
-    -> Chemicals (360) * 1
+    -> Chemicals (600) (XL, 60.0kg) * 7
+    -> Chemicals (360) (XL, 36.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 48
   => Request 3: Chemicals * 4444
-    -> Chemicals (600) * 7
-    -> Chemicals (360) * 1
+    -> Chemicals (600) (XL, 60.0kg) * 7
+    -> Chemicals (360) (XL, 36.0kg) * 1
+    -> Total weight: 456.0kg, total volume: 48
 ```
 ### Delete / 删除
 Enter `delete [id]` to delete a submitted request  
 输入`delete [id]`来删除一个已经提交的请求
 ```
-=> Material request 1 or command: m1*365
-  => Requested Metals * 1 (365 duplicates)
-=> Material request 366 or command: clear
-  => Cleared 365 requests
 => Material request 1 or command: m100*2
   => Requested Metals * 100 (2 duplicates)
+  => Request 1: Metals * 100
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
+  => Request 2: Metals * 100
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
 => Material request 3 or command: c1
   => Requested Chemicals * 1 (1 duplicates)
+  => Request 3: Chemicals * 1
+    -> Chemicals (30) (S, 3.0kg) * 1
+    -> Total weight: 3.0kg, total volume: 1
 => Material request 4 or command: C100
   => Requested Ceramics * 100 (1 duplicates)
+  => Request 4: Ceramics * 100
+    -> Ceramics (160) (L, 16.0kg) * 1
+    -> Total weight: 16.0kg, total volume: 4
 => Material request 5 or command: list
   => Request 1: Metals * 100
-    -> Metals (100) * 1
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
   => Request 2: Metals * 100
-    -> Metals (100) * 1
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
   => Request 3: Chemicals * 1
-    -> Chemicals (30) * 1
+    -> Chemicals (30) (S, 3.0kg) * 1
+    -> Total weight: 3.0kg, total volume: 1
   => Request 4: Ceramics * 100
-    -> Ceramics (160) * 1
+    -> Ceramics (160) (L, 16.0kg) * 1
+    -> Total weight: 16.0kg, total volume: 4
 => Material request 5 or command: delete 3
   => Deleted request 3
 => Material request 4 or command: list
   => Request 1: Metals * 100
-    -> Metals (100) * 1
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
   => Request 2: Metals * 100
-    -> Metals (100) * 1
+    -> Metals (100) (M, 10.0kg) * 1
+    -> Total weight: 10.0kg, total volume: 2
   => Request 3: Ceramics * 100
-    -> Ceramics (160) * 1
+    -> Ceramics (160) (L, 16.0kg) * 1
+    -> Total weight: 16.0kg, total volume: 4
 ```
 ### Clear / 清空
 Enter `clear` to delete all requests  
 输入`clear`来删除所有请求
 ```
-=> Material request 1 or command: m1*365
-  => Requested Metals * 1 (365 duplicates)
-=> Material request 366 or command: clear
-  => Cleared 365 requests
+=> Material request 1 or command: m1*265
+  => Requested Metals * 1 (265 duplicates)
+  => Request 1: Metals * 1
+    -> Metals (50) (S, 5.0kg) * 1
+    -> Total weight: 5.0kg, total volume: 1
+  => Request 2: Metals * 1
+    -> Metals (50) (S, 5.0kg) * 1
+    -> Total weight: 5.0kg, total volume: 1
+...
+  => Request 265: Metals * 1
+    -> Metals (50) (S, 5.0kg) * 1
+    -> Total weight: 5.0kg, total volume: 1
+=> Material request 266 or command: clear
+  => Cleared 265 requests
+=> Material request 1 or command:
 ```

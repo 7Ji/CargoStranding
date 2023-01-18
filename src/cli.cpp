@@ -30,28 +30,10 @@ void Cli::help() {
 
 void Cli::do_list() {
     uint i = 0;
-    uint last_quantity = 0;
-    uint same_quantity = 0;
     for (Request &request : requests) {
         ++i;
         std::printf("  => Request %u: %s * %u\n", i, Material::type_strings[request.type], request.quantity);
-        last_quantity = 0;
-        same_quantity = 0;
-        for (Material &material : request.materials) {
-            if (last_quantity == material.quantity) {
-                ++same_quantity;
-            } else {
-                if (same_quantity) {
-                    std::printf("%u\n", same_quantity);
-                }
-                same_quantity = 1;
-                last_quantity = material.quantity;
-                std::printf("    -> %s * ", material.name);
-            }
-        }
-        if (same_quantity) {
-            std::printf("%u\n", same_quantity);
-        }
+        request.list();
     }
 }
 
@@ -121,6 +103,24 @@ void Cli::do_report() {
     uint weight_int = weight / 10;
     uint weight_decimal = weight - weight_int * 10;
     std::printf("  => Total weight: %u.%u kg, total volume: %u\n", weight_int, weight_decimal, volume);
+    if (weight >= 6000) {
+        std::puts("    -> Warning: weight >= 600.0kg, exceeding the max carry capability of one Floating Carrier Lv2!");
+    }
+    if (weight >= 12000) {
+        std::puts("    -> Warning: weight >= 1200.0kg, exceeding the max carry capability of two Floating Carriers Lv2!");
+    }
+    if (volume > 12) {
+        std::puts("    -> Warning: volume > 12 (=2XL=3L=6M=12S), exceeding the max carry capability of Reverse Trike!");
+    }
+    if (volume > 36) {
+        std::puts("    -> Warning: volume > 36 (=6XL=9L=18M=36S), exceeding the max carry capability of one Floating Carrier!");
+    }
+    if (volume > 72) {
+        std::puts("    -> Warning: volume > 72 (=12XL=18L=36M=72S), exceeding the max carry capability of two Floating Carrier!");
+    }
+    if (volume > 168) {
+        std::puts("    -> Warning: volume > 168(=28XL=42L=74M=168S), exceeding the max carry capability of a Bridges Truck!");
+    }
 }
 
 void Cli::do_exit() {
@@ -200,6 +200,9 @@ int Cli::parse_request() {
     std::printf("  => Requested %s * %lu (%lu duplicates)\n", Material::type_strings[type], quantity, duplicate);
     for (ulong i = 0; i < duplicate; ++i) {
         requests.push_back(Request(type, quantity));
+        Request &request = requests.back();
+        std::printf("  => Request %lu: %s * %u\n", requests.size(), Material::type_strings[request.type], request.quantity);
+        request.list();
     }
     return 0;
 }

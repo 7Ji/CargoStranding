@@ -19,7 +19,7 @@ void Cargo::update_weight_string() {
     uint weight_int = weight / 10;
     uint weight_decimal = weight - weight_int * 10;
     int r = std::snprintf(weight_string, 7, "%u.%u", weight_int, weight_decimal);
-    if (r > 0) { // truncated
+    if (r > 6) { // truncated
         std::strncpy(weight_string, "------", 7);
     } else if (r < 0) { // error
         std::strncpy(weight_string, "xxxxxx", 7);
